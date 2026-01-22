@@ -35,6 +35,8 @@ jobs:
         run: npm ci
 
       - name: Build
+        env:
+          VITE_GAS_API_URL: ${{ secrets.VITE_GAS_API_URL }}
         run: npm run build
 
       - name: Setup Pages
