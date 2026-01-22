@@ -1,6 +1,6 @@
 # 🎉 Digital Meibo - デジタル名簿アプリ
 
-チームラボ社内飲み会用のモダンなデジタル名簿アプリケーションです。
+社内飲み会用のモダンなデジタル名簿アプリケーションです。
 
 ![Screenshot](https://via.placeholder.com/800x400?text=Digital+Meibo+Screenshot)
 
@@ -10,7 +10,7 @@
 - **詳細モーダル** - タップで詳細情報（名前、役割、Now、Topic、Core）を表示
 - **ナビゲーション** - モーダル内で左右ボタン/キーボード/スワイプで前後移動
 - **スケルトンローディング** - データ読み込み中のグロー演出
-- **Glassmorphism UI** - チームラボらしいモダンでダークなデザイン
+- **Glassmorphism UI** - モダンでダークなデザイン
 
 ## 🛠️ 技術スタック
 
@@ -147,4 +147,4 @@ MIT License
 
 ---
 
-Made with 💜 for teamLab
+Made with 💜

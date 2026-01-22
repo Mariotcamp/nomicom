@@ -49,10 +49,9 @@ function App() {
             className="flex items-center justify-between"
           >
             <div className="flex items-center gap-3">
-              {/* teamLab Logo */}
-              <img 
+              <img
                 src={`${import.meta.env.BASE_URL}teamlab-logo.png`}
-                alt="teamLab" 
+                alt="Logo"
                 className="h-10 md:h-12 w-auto object-contain"
               />
               <div>
@@ -60,11 +59,11 @@ function App() {
                   Borderless Drinking
                 </h1>
                 <p className="text-xs text-gray-600 hidden md:block">
-                  teamLab 社内飲み会 2026
+                  社内飲み会 2026
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-2 text-sm text-gray-700">
               <Sparkles className="w-4 h-4 text-amber-600" />
               <span>{profiles.length} Members</span>
@@ -91,18 +90,18 @@ function App() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6 max-w-6xl mx-auto justify-items-center">
           {isLoading
             ? // Skeleton cards
-              Array.from({ length: 16 }).map((_, index) => (
-                <SkeletonCard key={index} index={index} />
-              ))
+            Array.from({ length: 16 }).map((_, index) => (
+              <SkeletonCard key={index} index={index} />
+            ))
             : // Profile cards
-              profiles.map((profile, index) => (
-                <ProfileCard
-                  key={profile.id}
-                  profile={profile}
-                  index={index}
-                  onClick={() => handleCardClick(profile, index)}
-                />
-              ))
+            profiles.map((profile, index) => (
+              <ProfileCard
+                key={profile.id}
+                profile={profile}
+                index={index}
+                onClick={() => handleCardClick(profile, index)}
+              />
+            ))
           }
         </div>
 
@@ -136,7 +135,7 @@ function App() {
       <footer className="relative z-10 mt-12 py-6 border-t border-yellow-300/30">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <p className="text-xs text-gray-600">
-            Made with 💜 for teamLab
+            Made with team❤️
           </p>
         </div>
       </footer>
