@@ -50,13 +50,13 @@ export const DetailModal = ({
     if (isOpen) {
       // Save current scroll position
       const scrollY = window.scrollY;
-      
+
       // Lock scroll with position fixed
       document.body.style.position = 'fixed';
       document.body.style.top = `-${scrollY}px`;
       document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
-      
+
       return () => {
         // Restore scroll position
         document.body.style.position = '';
@@ -70,13 +70,10 @@ export const DetailModal = ({
 
   // Swipe handler
   const handleDragEnd = useCallback((_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const threshold = 100; // Increased threshold for clearer swipe intent
-    const velocity = Math.abs(info.velocity.x);
-    
-    // Require either high velocity or large offset for swipe
-    if ((info.offset.x > threshold || velocity > 500) && info.offset.x > 0) {
+    const threshold = 50;
+    if (info.offset.x > threshold) {
       onPrev();
-    } else if ((info.offset.x < -threshold || velocity > 500) && info.offset.x < 0) {
+    } else if (info.offset.x < -threshold) {
       onNext();
     }
   }, [onPrev, onNext]);
@@ -170,8 +167,6 @@ export const DetailModal = ({
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.3}
-            dragDirectionLock
-            dragMomentum={false}
             onDragEnd={handleDragEnd}
             onClick={(e) => e.stopPropagation()}
             onTouchMove={(e) => e.stopPropagation()}
@@ -189,14 +184,7 @@ export const DetailModal = ({
             </button>
 
             {/* Content - Scrollable */}
-            <div 
-              className="relative flex-1 overflow-y-auto overscroll-contain touch-pan-y"
-              style={{ touchAction: 'pan-y' }}
-              onPointerDownCapture={(e) => {
-                // Prevent drag when scrolling content
-                e.stopPropagation();
-              }}
-            >
+            <div className="relative flex-1 overflow-y-auto overscroll-contain">
               <div className="p-8 md:p-10 pb-6">
                 {/* Header - Card style */}
                 <div className="text-center mb-8">
