@@ -48,13 +48,24 @@ export const DetailModal = ({
   // Lock body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
+      // Save current scroll position
+      const scrollY = window.scrollY;
+      
+      // Lock scroll with position fixed
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
+      
+      return () => {
+        // Restore scroll position
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        window.scrollTo(0, scrollY);
+      };
     }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
   }, [isOpen]);
 
   // Swipe handler
@@ -114,6 +125,7 @@ export const DetailModal = ({
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center p-0"
           onClick={onClose}
+          onTouchMove={(e) => e.preventDefault()}
         >
           {/* Backdrop with blur */}
           <motion.div
@@ -121,6 +133,7 @@ export const DetailModal = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="absolute inset-0 bg-white/80 backdrop-blur-md"
+            onTouchMove={(e) => e.preventDefault()}
           />
 
           {/* Navigation buttons - Desktop only */}
@@ -156,6 +169,7 @@ export const DetailModal = ({
             dragElastic={0.3}
             onDragEnd={handleDragEnd}
             onClick={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
             className="relative flex flex-col w-[90%] max-w-lg mx-4 md:mx-auto max-h-[85vh] rounded-3xl bg-white/95 border border-yellow-300/40 shadow-2xl overflow-hidden"
           >
             {/* Gradient overlay */}
