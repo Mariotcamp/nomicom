@@ -156,7 +156,7 @@ export const DetailModal = ({
             dragElastic={0.3}
             onDragEnd={handleDragEnd}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-[90%] max-w-lg mx-4 md:mx-auto h-[75vh] md:h-auto md:max-h-[90vh] rounded-3xl bg-white/95 border border-yellow-300/40 shadow-2xl overflow-hidden"
+            className="relative flex flex-col w-[90%] max-w-lg mx-4 md:mx-auto max-h-[85vh] rounded-3xl bg-white/95 border border-yellow-300/40 shadow-2xl overflow-hidden"
           >
             {/* Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-yellow-50/30 via-orange-50/20 to-amber-50/30 rounded-3xl pointer-events-none" />
@@ -171,7 +171,7 @@ export const DetailModal = ({
 
             {/* Content - Scrollable */}
             <div className="relative flex-1 overflow-y-auto overscroll-contain">
-              <div className="p-8 md:p-10">
+              <div className="p-8 md:p-10 pb-6">
                 {/* Header - Card style */}
                 <div className="text-center mb-8">
                   {/* Large avatar */}
@@ -215,7 +215,7 @@ export const DetailModal = ({
                         {section.subtitle}
                       </h3>
                       <div className="p-5 rounded-xl bg-yellow-50 border border-yellow-200">
-                        <p className="text-sm md:text-base text-gray-700 leading-relaxed">{section.content}</p>
+                        <p className="text-sm md:text-base text-gray-700 leading-relaxed break-words whitespace-pre-wrap">{section.content}</p>
                       </div>
                     </motion.div>
                   ))}
