@@ -1,3 +1,10 @@
 export { ProfileCard } from './ProfileCard';
 export { DetailModal } from './DetailModal';
 export { SkeletonCard } from './SkeletonCard';
+export { SelfBadge } from './SelfBadge';
+export { AIQuestionPanel } from './AIQuestionPanel';
+export { IdentityButton } from './IdentityButton';
+export { ProgressBar } from './ProgressBar';
+export { VoteButton } from './VoteButton';
+export { VoteModal } from './VoteModal';
+export { VoteResultModal } from './VoteResultModal';

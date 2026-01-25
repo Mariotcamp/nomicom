@@ -1,13 +1,15 @@
 import { motion } from 'framer-motion';
 import type { Profile } from '../types';
+import { SelfBadge } from './SelfBadge';
 
 interface ProfileCardProps {
   profile: Profile;
   index: number;
   onClick: () => void;
+  isMe?: boolean;
 }
 
-export const ProfileCard = ({ profile, index, onClick }: ProfileCardProps) => {
+export const ProfileCard = ({ profile, index, onClick, isMe = false }: ProfileCardProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -20,8 +22,13 @@ export const ProfileCard = ({ profile, index, onClick }: ProfileCardProps) => {
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      className="glass-card p-6 md:p-8 cursor-pointer group relative overflow-hidden w-full max-w-sm"
+      className={`glass-card p-6 md:p-8 cursor-pointer group relative overflow-hidden w-full max-w-sm ${
+        isMe ? 'ring-2 ring-yellow-400 ring-offset-2' : ''
+      }`}
     >
+      {/* Self badge */}
+      {isMe && <SelfBadge variant="card" />}
+
       {/* Gradient overlay on hover */}
       <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/0 via-orange-500/0 to-amber-500/0 group-hover:from-yellow-500/3 group-hover:via-orange-500/3 group-hover:to-amber-500/3 transition-all duration-500" />
 

@@ -1,15 +1,32 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Users, Sparkles } from 'lucide-react';
-import { ProfileCard, DetailModal, SkeletonCard } from './components';
-import { useProfiles } from './hooks';
+import {
+  ProfileCard,
+  DetailModal,
+  SkeletonCard,
+  VoteButton,
+  VoteModal,
+  VoteResultModal,
+} from './components';
+import { useProfiles, useVote, useUserIdentity } from './hooks';
 import type { Profile } from './types';
 
 function App() {
   const { profiles, isLoading, error } = useProfiles();
+  const { voteStatus, isLoading: isVoteLoading, fetchVoteStatus, submitVote } = useVote();
+  const { currentUserId, isRegistered, registerAsMe, unregister } = useUserIdentity();
+
   const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isVoteModalOpen, setIsVoteModalOpen] = useState(false);
+  const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+
+  // 初期ロード時に投票状況を取得
+  useEffect(() => {
+    fetchVoteStatus(currentUserId ?? undefined);
+  }, [currentUserId, fetchVoteStatus]);
 
   const handleCardClick = useCallback((profile: Profile, index: number) => {
     setSelectedProfile(profile);
@@ -36,6 +53,47 @@ function App() {
     setSelectedIndex(newIndex);
     setSelectedProfile(profiles[newIndex]);
   }, [profiles, selectedIndex]);
+
+  // 投票FABクリック
+  const handleVoteButtonClick = useCallback(() => {
+    if (isRegistered && voteStatus?.myStatus) {
+      // 既に投票済みの場合は結果を表示
+      setIsResultModalOpen(true);
+    } else {
+      // 未投票の場合は投票モーダルを表示
+      setIsVoteModalOpen(true);
+    }
+  }, [isRegistered, voteStatus?.myStatus]);
+
+  // 投票送信
+  const handleVote = useCallback(
+    async (status: 1 | 2 | 3) => {
+      if (!currentUserId) return;
+      const success = await submitVote(currentUserId, status);
+      if (success) {
+        setIsVoteModalOpen(false);
+        setIsResultModalOpen(true);
+      }
+    },
+    [currentUserId, submitVote]
+  );
+
+  // 投票変更
+  const handleChangeVote = useCallback(() => {
+    setIsResultModalOpen(false);
+    setIsVoteModalOpen(true);
+  }, []);
+
+  // 自分を探す（未登録時）
+  const handleFindSelf = useCallback(() => {
+    setIsVoteModalOpen(false);
+    // 最初のプロフィールを開く
+    if (profiles.length > 0) {
+      setSelectedProfile(profiles[0]);
+      setSelectedIndex(0);
+      setIsModalOpen(true);
+    }
+  }, [profiles]);
 
   return (
     <div className="min-h-screen relative z-10">
@@ -100,6 +158,7 @@ function App() {
                 profile={profile}
                 index={index}
                 onClick={() => handleCardClick(profile, index)}
+                isMe={currentUserId === profile.id}
               />
             ))
           }
@@ -129,7 +188,37 @@ function App() {
         onNext={handleNextProfile}
         totalCount={profiles.length}
         currentIndex={selectedIndex}
+        currentUserId={currentUserId}
+        onRegister={registerAsMe}
+        onUnregister={unregister}
       />
+
+      {/* Vote Button (FAB) */}
+      <VoteButton
+        survivalRate={voteStatus?.survivalRate ?? 0}
+        onClick={handleVoteButtonClick}
+        isLoading={isVoteLoading}
+      />
+
+      {/* Vote Modal */}
+      <VoteModal
+        isOpen={isVoteModalOpen}
+        onClose={() => setIsVoteModalOpen(false)}
+        currentUserId={currentUserId}
+        onVote={handleVote}
+        isLoading={isVoteLoading}
+        onFindSelf={handleFindSelf}
+      />
+
+      {/* Vote Result Modal */}
+      {voteStatus && (
+        <VoteResultModal
+          isOpen={isResultModalOpen}
+          onClose={() => setIsResultModalOpen(false)}
+          voteStatus={voteStatus}
+          onChangeVote={handleChangeVote}
+        />
+      )}
 
       {/* Footer */}
       <footer className="relative z-10 mt-12 py-6 border-t border-yellow-300/30">

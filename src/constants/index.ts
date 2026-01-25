@@ -1,7 +1,34 @@
+import type { Profile, VoteStatus } from '../types';
+
 export const GAS_API_URL = import.meta.env.VITE_GAS_API_URL || '';
 
+// Mock vote status for development
+export const MOCK_VOTE_STATUS: VoteStatus = {
+  survivalRate: 75,
+  totalVoted: 20,
+  totalMembers: 24,
+  myStatus: null,
+  goCount: 5,
+  maybeCount: 10,
+  homeCount: 5,
+  goMembers: [
+    { id: 1, name: '田中 太郎' },
+    { id: 3, name: '佐藤 健一' },
+    { id: 5, name: '伊藤 大輔' },
+    { id: 7, name: '山本 翔太' },
+    { id: 9, name: '小林 勇気' },
+  ],
+  maybeMembers: [
+    { id: 2, name: '鈴木 花子' },
+    { id: 4, name: '高橋 美咲' },
+    { id: 6, name: '渡辺 さくら' },
+    { id: 8, name: '中村 麻衣' },
+    { id: 10, name: '加藤 理恵' },
+  ],
+};
+
 // Mock data for development
-export const MOCK_PROFILES = [
+export const MOCK_PROFILES: Profile[] = [
   {
     id: 1,
     name: '田中 太郎',
@@ -10,6 +37,7 @@ export const MOCK_PROFILES = [
     now: 'Next.js 15のApp Routerを使った新規プロジェクト開発',
     topic: '最近AI画像生成にハマっています',
     core: '「常に学び続ける」- 変化を恐れず、新しいことに挑戦し続ける',
+    ai_questions: '["キャリアで一番影響を受けた技術は何ですか？","AI画像生成で作ってみたい作品はありますか？","新しいことに挑戦する時のモチベーションの源は？"]',
   },
   {
     id: 2,
@@ -19,6 +47,7 @@ export const MOCK_PROFILES = [
     now: '新プロジェクトのUI設計を担当しています。ユーザー体験を最優先に考え、直感的で美しいインターフェースを目指しています。現在はモバイルアプリとWebアプリの両方のデザインシステムを構築中で、コンポーネントライブラリの整備にも取り組んでいます。',
     topic: '最近は3Dモデリングを勉強中で、Blenderを使ったモデリングにハマっています。また、Figmaの新機能である3D機能にも興味があり、実際のプロジェクトに取り入れる方法を模索しています。デザインと技術の融合にワクワクしていて、AR/VRのUIデザインにも挑戦したいと考えています。',
     core: '「ユーザーの笑顔を想像する」- これがすべてのデザインの原点です。技術的な制約やビジネス要件を理解しつつも、最終的にはユーザーが使って楽しい、使って幸せになれるデザインを目指しています。デザインは単なる見た目の問題ではなく、感情を動かし、行動を変える力があると信じています。',
+    ai_questions: '["デザインで一番大切にしていることは？","3Dモデリングで最初に作ったものは？","ユーザーの笑顔を感じた瞬間は？"]',
   },
   {
     id: 3,
@@ -28,6 +57,7 @@ export const MOCK_PROFILES = [
     now: 'マイクロサービスアーキテクチャの設計',
     topic: 'Rustでツール作りを始めました',
     core: '「Keep It Simple」- 複雑さは敵',
+    ai_questions: '["マイクロサービス設計で一番難しいと感じることは？","Rustを選んだ理由は？","シンプルさを追求するコツは？"]',
   },
   {
     id: 4,
@@ -37,6 +67,7 @@ export const MOCK_PROFILES = [
     now: '大規模プロジェクトの進行管理',
     topic: 'スクラム開発の認定資格取得中',
     core: '「信頼と対話」- チームの力を最大化する',
+    ai_questions: '["大規模プロジェクトで一番気をつけていることは？","スクラムマスターを目指すきっかけは？","チームの信頼を築くために心がけていることは？"]',
   },
   {
     id: 5,
@@ -46,6 +77,7 @@ export const MOCK_PROFILES = [
     now: 'Kubernetesクラスタの最適化',
     topic: 'サーバーレスアーキテクチャに興味津々',
     core: '「99.99%の可用性を目指して」- 信頼性の追求',
+    ai_questions: '["Kubernetes運用で一番苦労したことは？","サーバーレスに期待していることは？","障害対応で印象に残っているエピソードは？"]',
   },
   {
     id: 6,
@@ -55,6 +87,7 @@ export const MOCK_PROFILES = [
     now: '機械学習モデルの精度改善',
     topic: '生成AIの研究に没頭中',
     core: '「データドリブン」- 直感よりも事実を信じる',
+    ai_questions: '["データ分析で発見した意外な事実は？","生成AIの可能性で一番ワクワクすることは？","データサイエンティストになったきっかけは？"]',
   },
   {
     id: 7,
@@ -64,6 +97,7 @@ export const MOCK_PROFILES = [
     now: 'Flutter 3.0での新アプリ開発',
     topic: 'SwiftUIの勉強を始めました',
     core: '「ユーザー体験ファースト」- 使いやすさがすべて',
+    ai_questions: '["FlutterとSwiftUI、どちらが好きですか？","モバイルアプリ開発の醍醐味は？","ユーザー体験で特にこだわっているポイントは？"]',
   },
   {
     id: 8,
@@ -73,6 +107,7 @@ export const MOCK_PROFILES = [
     now: '自動テスト基盤の構築',
     topic: 'カオスエンジニアリングに挑戦中',
     core: '「品質は譲れない」- 妥協なきテスト',
+    ai_questions: '["一番印象に残っているバグは？","カオスエンジニアリングで学んだことは？","品質を守るために大切にしていることは？"]',
   },
   {
     id: 9,
@@ -82,6 +117,7 @@ export const MOCK_PROFILES = [
     now: 'ゼロトラストアーキテクチャの導入',
     topic: 'CTFに参加してスキルアップ中',
     core: '「セキュリティは文化」- 全員で守る意識',
+    ai_questions: '["ゼロトラスト導入で一番難しいことは？","CTFで印象に残った問題は？","セキュリティ意識を広めるコツは？"]',
   },
   {
     id: 10,
@@ -91,6 +127,7 @@ export const MOCK_PROFILES = [
     now: 'API ドキュメントの刷新',
     topic: '動画コンテンツ制作に挑戦中',
     core: '「わかりやすさの追求」- 誰でも理解できるように',
+    ai_questions: '["わかりやすい文章を書くコツは？","動画コンテンツ制作で苦労していることは？","技術文書で一番大切にしていることは？"]',
   },
   {
     id: 11,
@@ -100,6 +137,7 @@ export const MOCK_PROFILES = [
     now: 'CI/CDパイプラインの最適化',
     topic: 'GitOpsの導入を検討中',
     core: '「手作業をなくす」- 自動化で人間の時間を解放',
+    ai_questions: '["自動化で一番効果があった事例は？","GitOpsに期待していることは？","DevOpsの醍醐味は何ですか？"]',
   },
   {
     id: 12,
@@ -109,6 +147,7 @@ export const MOCK_PROFILES = [
     now: '新サービスのプロトタイピング',
     topic: 'サービスデザインの勉強中',
     core: '「WHYから始める」- 本質を見極める',
+    ai_questions: '["プロトタイピングで大切にしていることは？","サービスデザインの面白さは？","WHYを見極めるためのコツは？"]',
   },
   {
     id: 13,
@@ -118,6 +157,7 @@ export const MOCK_PROFILES = [
     now: 'LLMを使った社内ツール開発',
     topic: 'マルチモーダルAIの研究',
     core: '「AIは道具」- 人間の創造性を拡張する',
+    ai_questions: '["LLMで作ったツールで一番便利だったものは？","マルチモーダルAIの可能性で興味深いことは？","AI開発で心がけていることは？"]',
   },
   {
     id: 14,
@@ -127,6 +167,7 @@ export const MOCK_PROFILES = [
     now: 'エンジニアコミュニティの運営',
     topic: 'ファシリテーションスキルを磨き中',
     core: '「人と人を繋げる」- コミュニティの力',
+    ai_questions: '["コミュニティ運営で一番嬉しかったことは？","良いファシリテーターの条件は？","繋がりから生まれた価値のエピソードは？"]',
   },
   {
     id: 15,
@@ -136,6 +177,7 @@ export const MOCK_PROFILES = [
     now: 'オブザーバビリティ基盤の構築',
     topic: 'OpenTelemetryの導入検証中',
     core: '「計測できなければ改善できない」- 可視化の重要性',
+    ai_questions: '["オブザーバビリティで発見した問題は？","OpenTelemetryの良いところは？","SREとしてのやりがいは？"]',
   },
   {
     id: 16,
@@ -145,5 +187,6 @@ export const MOCK_PROFILES = [
     now: 'ユーザーインタビューの実施',
     topic: '定性分析の手法を研究中',
     core: '「共感から始める」- ユーザーの立場で考える',
+    ai_questions: '["ユーザーインタビューで印象的だった発見は？","定性分析で大切にしていることは？","共感力を高めるためにしていることは？"]',
   },
 ];
