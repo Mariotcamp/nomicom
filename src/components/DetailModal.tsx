@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import type { PanInfo } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Sparkles, Target, MessageCircle, Heart } from 'lucide-react';
 import type { Profile } from '../types';
+import { SelfBadge } from './SelfBadge';
+import { IdentityButton } from './IdentityButton';
+import { AIQuestionPanel } from './AIQuestionPanel';
 
 interface DetailModalProps {
   profile: Profile | null;
@@ -12,6 +15,9 @@ interface DetailModalProps {
   onNext: () => void;
   totalCount: number;
   currentIndex: number;
+  currentUserId?: number | null;
+  onRegister?: (userId: number) => void;
+  onUnregister?: () => void;
 }
 
 export const DetailModal = ({
@@ -22,7 +28,11 @@ export const DetailModal = ({
   onNext,
   totalCount,
   currentIndex,
+  currentUserId = null,
+  onRegister,
+  onUnregister,
 }: DetailModalProps) => {
+  const isMe = profile ? currentUserId === profile.id : false;
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -206,11 +216,30 @@ export const DetailModal = ({
                     <span className="text-amber-800 text-sm md:text-base">{profile.role}</span>
                   </div>
 
+                  {/* Self Badge */}
+                  {isMe && (
+                    <div className="mb-4">
+                      <SelfBadge variant="modal" />
+                    </div>
+                  )}
+
                   {/* Hitokoto */}
                   <p className="text-gray-700 text-base md:text-lg italic px-4">
                     「{profile.hitokoto}」
                   </p>
                 </div>
+
+                {/* Identity Button */}
+                {onRegister && onUnregister && (
+                  <div className="mb-6">
+                    <IdentityButton
+                      userId={profile.id}
+                      currentUserId={currentUserId}
+                      onRegister={onRegister}
+                      onUnregister={onUnregister}
+                    />
+                  </div>
+                )}
 
                 {/* Divider */}
                 <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-yellow-300/40 to-transparent mb-8" />
@@ -234,6 +263,11 @@ export const DetailModal = ({
                     </motion.div>
                   ))}
                 </div>
+
+                {/* AI Question Panel */}
+                {profile.ai_questions && (
+                  <AIQuestionPanel questions={profile.ai_questions} isMe={isMe} />
+                )}
 
                 {/* Page indicator - Inside card at bottom */}
                 <div className="mt-10 pt-8 border-t border-yellow-300/30">
