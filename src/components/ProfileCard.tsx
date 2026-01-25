@@ -10,8 +10,15 @@ interface ProfileCardProps {
 }
 
 export const ProfileCard = ({ profile, index, onClick, isMe = false }: ProfileCardProps) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick();
+    }
+  };
+
   return (
-    <motion.div
+    <motion.article
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
@@ -22,7 +29,11 @@ export const ProfileCard = ({ profile, index, onClick, isMe = false }: ProfileCa
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      className={`glass-card p-6 md:p-8 cursor-pointer group relative overflow-hidden w-full max-w-sm ${
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      aria-label={`${profile.name}のプロフィールを開く${isMe ? '（あなた）' : ''}`}
+      className={`glass-card p-6 md:p-8 cursor-pointer group relative overflow-hidden w-full max-w-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 ${
         isMe ? 'ring-2 ring-yellow-400 ring-offset-2' : ''
       }`}
     >
@@ -63,6 +74,6 @@ export const ProfileCard = ({ profile, index, onClick, isMe = false }: ProfileCa
 
       {/* Bottom gradient line */}
       <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-    </motion.div>
+    </motion.article>
   );
 };

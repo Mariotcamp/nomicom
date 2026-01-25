@@ -1,11 +1,11 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { PanInfo } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Sparkles, Target, MessageCircle, Heart } from 'lucide-react';
 import type { Profile } from '../types';
 import { SelfBadge } from './SelfBadge';
 import { IdentityButton } from './IdentityButton';
 import { AIQuestionPanel } from './AIQuestionPanel';
+import { useSwipeGesture } from '../hooks';
 
 interface DetailModalProps {
   profile: Profile | null;
@@ -78,15 +78,12 @@ export const DetailModal = ({
     }
   }, [isOpen]);
 
-  // Swipe handler
-  const handleDragEnd = useCallback((_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const threshold = 50;
-    if (info.offset.x > threshold) {
-      onPrev();
-    } else if (info.offset.x < -threshold) {
-      onNext();
-    }
-  }, [onPrev, onNext]);
+  // Swipe handler（横スワイプで前後、下スワイプで閉じる）
+  const { handleDragEnd } = useSwipeGesture({
+    onSwipeLeft: onNext,
+    onSwipeRight: onPrev,
+    onSwipeDown: onClose,
+  });
 
   if (!profile) return null;
 
@@ -174,8 +171,8 @@ export const DetailModal = ({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -300 }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
+            drag
+            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
             dragElastic={0.3}
             onDragEnd={handleDragEnd}
             onClick={(e) => e.stopPropagation()}

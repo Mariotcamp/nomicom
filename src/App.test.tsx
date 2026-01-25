@@ -34,6 +34,21 @@ vi.mock('./hooks', () => ({
     unregister: vi.fn(),
     isMe: vi.fn(() => false),
   }),
+  usePolling: () => ({
+    isPolling: false,
+    start: vi.fn(),
+    stop: vi.fn(),
+    trigger: vi.fn(),
+  }),
+  useSwipeGesture: () => ({
+    handleDragEnd: vi.fn(),
+  }),
+  useToast: () => ({
+    toasts: [],
+    showToast: vi.fn(),
+    removeToast: vi.fn(),
+  }),
+  DEFAULT_POLLING_INTERVAL: 30000,
 }))
 
 describe('App', () => {
