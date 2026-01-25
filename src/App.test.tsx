@@ -40,6 +40,9 @@ vi.mock('./hooks', () => ({
     stop: vi.fn(),
     trigger: vi.fn(),
   }),
+  useSwipeGesture: () => ({
+    handleDragEnd: vi.fn(),
+  }),
   DEFAULT_POLLING_INTERVAL: 30000,
 }))
 

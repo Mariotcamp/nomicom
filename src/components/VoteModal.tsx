@@ -1,6 +1,7 @@
 import { useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Rocket, Beer, Home, Search, Loader2 } from 'lucide-react';
+import { useSwipeGesture } from '../hooks';
 
 interface VoteModalProps {
   isOpen: boolean;
@@ -73,6 +74,11 @@ export const VoteModal = ({
     await onVote(status);
   };
 
+  // 下スワイプで閉じる
+  const { handleDragEnd } = useSwipeGesture({
+    onSwipeDown: onClose,
+  });
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -88,6 +94,10 @@ export const VoteModal = ({
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            drag="y"
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={0.3}
+            onDragEnd={handleDragEnd}
             className="relative w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
             role="dialog"

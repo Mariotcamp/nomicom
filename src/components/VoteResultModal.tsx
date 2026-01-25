@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Beer, Rocket, Home } from 'lucide-react';
 import type { VoteStatus } from '../types';
 import { ProgressBar } from './ProgressBar';
+import { useSwipeGesture } from '../hooks';
 
 interface VoteResultModalProps {
   isOpen: boolean;
@@ -55,6 +56,11 @@ export const VoteResultModal = ({
     };
   }, [isOpen, handleKeyDown]);
 
+  // 下スワイプで閉じる
+  const { handleDragEnd } = useSwipeGesture({
+    onSwipeDown: onClose,
+  });
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -70,6 +76,10 @@ export const VoteResultModal = ({
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            drag="y"
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={0.3}
+            onDragEnd={handleDragEnd}
             className="relative w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden max-h-[85vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
             role="dialog"
