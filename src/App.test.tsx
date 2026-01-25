@@ -34,6 +34,13 @@ vi.mock('./hooks', () => ({
     unregister: vi.fn(),
     isMe: vi.fn(() => false),
   }),
+  usePolling: () => ({
+    isPolling: false,
+    start: vi.fn(),
+    stop: vi.fn(),
+    trigger: vi.fn(),
+  }),
+  DEFAULT_POLLING_INTERVAL: 30000,
 }))
 
 describe('App', () => {

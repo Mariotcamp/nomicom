@@ -9,7 +9,7 @@ import {
   VoteModal,
   VoteResultModal,
 } from './components';
-import { useProfiles, useVote, useUserIdentity } from './hooks';
+import { useProfiles, useVote, useUserIdentity, usePolling, DEFAULT_POLLING_INTERVAL } from './hooks';
 import type { Profile } from './types';
 
 function App() {
@@ -22,6 +22,17 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isVoteModalOpen, setIsVoteModalOpen] = useState(false);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+
+  // 投票状況のポーリング（30秒間隔）
+  const pollCallback = useCallback(() => {
+    fetchVoteStatus(currentUserId ?? undefined);
+  }, [currentUserId, fetchVoteStatus]);
+
+  usePolling(pollCallback, {
+    interval: DEFAULT_POLLING_INTERVAL,
+    enabled: true,
+    pauseOnHidden: true,
+  });
 
   // 初期ロード時に投票状況を取得
   useEffect(() => {
