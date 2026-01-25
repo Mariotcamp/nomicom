@@ -21,7 +21,7 @@ export const VoteButton = ({ survivalRate, onClick, isLoading = false }: VoteBut
       style={{
         paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))',
       }}
-      aria-label="2次会投票を開く"
+      aria-label={`2次会投票を開く（現在の生存率: ${survivalRate}%）`}
     >
       {/* パルスアニメーション */}
       <motion.div
