@@ -43,6 +43,11 @@ vi.mock('./hooks', () => ({
   useSwipeGesture: () => ({
     handleDragEnd: vi.fn(),
   }),
+  useToast: () => ({
+    toasts: [],
+    showToast: vi.fn(),
+    removeToast: vi.fn(),
+  }),
   DEFAULT_POLLING_INTERVAL: 30000,
 }))
 

@@ -8,3 +8,4 @@ export { ProgressBar } from './ProgressBar';
 export { VoteButton } from './VoteButton';
 export { VoteModal } from './VoteModal';
 export { VoteResultModal } from './VoteResultModal';
+export { ToastContainer } from './Toast';

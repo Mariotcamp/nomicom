@@ -8,14 +8,16 @@ import {
   VoteButton,
   VoteModal,
   VoteResultModal,
+  ToastContainer,
 } from './components';
-import { useProfiles, useVote, useUserIdentity, usePolling, DEFAULT_POLLING_INTERVAL } from './hooks';
+import { useProfiles, useVote, useUserIdentity, usePolling, useToast, DEFAULT_POLLING_INTERVAL } from './hooks';
 import type { Profile } from './types';
 
 function App() {
   const { profiles, isLoading, error } = useProfiles();
   const { voteStatus, isLoading: isVoteLoading, fetchVoteStatus, submitVote } = useVote();
   const { currentUserId, isRegistered, registerAsMe, unregister } = useUserIdentity();
+  const { toasts, showToast, removeToast } = useToast();
 
   const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
@@ -84,9 +86,13 @@ function App() {
       if (success) {
         setIsVoteModalOpen(false);
         setIsResultModalOpen(true);
+        const statusLabels = { 1: '行く！', 2: '流れに任せる', 3: 'お先に！' };
+        showToast(`「${statusLabels[status]}」で投票しました`, 'success');
+      } else {
+        showToast('投票に失敗しました。もう一度お試しください', 'error');
       }
     },
-    [currentUserId, submitVote]
+    [currentUserId, submitVote, showToast]
   );
 
   // 投票変更
@@ -200,8 +206,14 @@ function App() {
         totalCount={profiles.length}
         currentIndex={selectedIndex}
         currentUserId={currentUserId}
-        onRegister={registerAsMe}
-        onUnregister={unregister}
+        onRegister={(userId) => {
+          registerAsMe(userId);
+          showToast('自分として登録しました', 'success');
+        }}
+        onUnregister={() => {
+          unregister();
+          showToast('登録を解除しました', 'info');
+        }}
       />
 
       {/* Vote Button (FAB) */}
@@ -230,6 +242,9 @@ function App() {
           onChangeVote={handleChangeVote}
         />
       )}
+
+      {/* Toast notifications */}
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
 
       {/* Footer */}
       <footer className="relative z-10 mt-12 py-6 border-t border-yellow-300/30">
